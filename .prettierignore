@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+*.log
+.env*
+dist
+build
+coverage
+.vscode/settings.json
+.idea
+*.min.js
+*.min.css

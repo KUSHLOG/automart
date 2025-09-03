@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  vehicles  Vehicle[]
+  bids      Bid[]
+}
+
+model Vehicle {
+  id          String   @id @default(cuid())
+  make        String
+  model       String
+  year        Int
+  price       Int       // cents or LKR whole number. Here treat as integer LKR.
+  mileage     Int       // in km
+  imageUrl    String
+  description String
+  specs       Json      // include { airConditioner: true/false, ... }
+  type        VehicleType // BUY_NOW, BIDDING, LIVE_AUCTION
+  ownerId     String
+  owner       User      @relation(fields: [ownerId], references: [id])
+  views       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  // Bidding window for BIDDING type
+  biddingStart DateTime?
+  biddingEnd   DateTime?
+  bids        Bid[]
+}
+
+enum VehicleType {
+  BUY_NOW
+  BIDDING
+}
+
+model Bid {
+  id         String   @id @default(cuid())
+  amount     Int
+  createdAt  DateTime @default(now())
+  bidderId   String
+  bidder     User     @relation(fields: [bidderId], references: [id])
+  vehicleId  String
+  vehicle    Vehicle  @relation(fields: [vehicleId], references: [id])
+}
