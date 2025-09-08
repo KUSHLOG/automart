@@ -1,27 +1,105 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 
 function TransparentNavigation() {
   const [scrollY, setScrollY] = useState(0)
+  const [isDarkBackground, setIsDarkBackground] = useState(true)
+  const navRef = useRef<HTMLElement>(null)
   const { data: session } = useSession()
 
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY)
+      
+      // Detect background color underneath the navigation
+      if (navRef.current) {
+        const navRect = navRef.current.getBoundingClientRect()
+        const centerX = navRect.left + navRect.width / 2
+        const centerY = navRect.top + navRect.height / 2
+        
+        // Get the element underneath the navigation center
+        const elementBelow = document.elementFromPoint(centerX, centerY + navRect.height)
+        
+        if (elementBelow) {
+          const styles = window.getComputedStyle(elementBelow)
+          const bgColor = styles.backgroundColor
+          const bgImage = styles.backgroundImage
+          
+          // Check if background is dark or light
+          let isDark = true
+          
+          if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
+            // Parse RGB values
+            const rgb = bgColor.match(/\d+/g)
+            if (rgb && rgb.length >= 3) {
+              const [r, g, b] = rgb.map(Number)
+              // Calculate relative luminance
+              const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+              isDark = luminance < 0.5
+            }
+          } else if (bgImage && bgImage !== 'none') {
+            // If there's a background image, assume it's dark (like hero sections)
+            isDark = true
+          } else {
+            // Check parent elements for background
+            let parent = elementBelow.parentElement
+            let found = false
+            while (parent && !found && parent !== document.body) {
+              const parentStyles = window.getComputedStyle(parent)
+              const parentBg = parentStyles.backgroundColor
+              const parentBgImage = parentStyles.backgroundImage
+              
+              if (parentBg && parentBg !== 'rgba(0, 0, 0, 0)' && parentBg !== 'transparent') {
+                const rgb = parentBg.match(/\d+/g)
+                if (rgb && rgb.length >= 3) {
+                  const [r, g, b] = rgb.map(Number)
+                  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+                  isDark = luminance < 0.5
+                  found = true
+                }
+              } else if (parentBgImage && parentBgImage !== 'none') {
+                isDark = true
+                found = true
+              }
+              parent = parent.parentElement
+            }
+            
+            // If no background found, use scroll position as fallback
+            if (!found) {
+              isDark = scrollY < 300 // Assume dark hero section at top
+            }
+          }
+          
+          setIsDarkBackground(isDark)
+        }
+      }
     }
 
+    // Initial check
+    handleScroll()
+    
     window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    window.addEventListener('resize', handleScroll, { passive: true })
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
+    }
+  }, [scrollY])
 
-  // Simple logic: White text at top (dark hero), dark text when scrolled (light content)
-  const isOnLightBackground = scrollY > 100
+  // Text should be white on dark backgrounds, dark on light backgrounds
+  const textColor = isDarkBackground ? '#ffffff' : '#1f2937'
+  const secondaryTextColor = isDarkBackground ? '#e5e7eb' : '#6b7280'
+  const linkColor = isDarkBackground ? '#ffffff' : '#374151'
+  const signOutColor = isDarkBackground ? '#f87171' : '#dc2626'
+  const textShadow = isDarkBackground ? '0 1px 3px rgba(0, 0, 0, 0.7)' : 'none'
 
   return (
     <nav
+      ref={navRef}
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out"
       style={{
         // ALWAYS transparent - only blur changes
@@ -39,8 +117,8 @@ function TransparentNavigation() {
             <div
               className="text-2xl font-bold transition-colors duration-500 ease-out"
               style={{
-                color: isOnLightBackground ? '#1f2937' : '#ffffff',
-                textShadow: isOnLightBackground ? 'none' : '0 1px 3px rgba(0, 0, 0, 0.7)',
+                color: textColor,
+                textShadow: textShadow,
               }}
             >
               <span className="text-blue-500">Auto</span> Mart
@@ -53,8 +131,8 @@ function TransparentNavigation() {
               href="/"
               className="font-medium hover:opacity-80 transition-all duration-500 ease-out"
               style={{
-                color: isOnLightBackground ? '#374151' : '#ffffff',
-                textShadow: isOnLightBackground ? 'none' : '0 1px 2px rgba(0, 0, 0, 0.7)',
+                color: linkColor,
+                textShadow: textShadow,
               }}
             >
               Home
@@ -63,8 +141,8 @@ function TransparentNavigation() {
               href="/vehicles"
               className="font-medium hover:opacity-80 transition-all duration-500 ease-out"
               style={{
-                color: isOnLightBackground ? '#374151' : '#ffffff',
-                textShadow: isOnLightBackground ? 'none' : '0 1px 2px rgba(0, 0, 0, 0.7)',
+                color: linkColor,
+                textShadow: textShadow,
               }}
             >
               Vehicles
@@ -78,8 +156,8 @@ function TransparentNavigation() {
                 <span
                   className="text-sm font-medium transition-colors duration-500 ease-out"
                   style={{
-                    color: isOnLightBackground ? '#6b7280' : '#e5e7eb',
-                    textShadow: isOnLightBackground ? 'none' : '0 1px 2px rgba(0, 0, 0, 0.7)',
+                    color: secondaryTextColor,
+                    textShadow: textShadow,
                   }}
                 >
                   Welcome, {session.user?.name || session.user?.email}
@@ -89,8 +167,8 @@ function TransparentNavigation() {
                     type="submit"
                     className="text-sm font-medium hover:opacity-80 transition-colors duration-500 ease-out"
                     style={{
-                      color: isOnLightBackground ? '#dc2626' : '#f87171',
-                      textShadow: isOnLightBackground ? 'none' : '0 1px 2px rgba(0, 0, 0, 0.7)',
+                      color: signOutColor,
+                      textShadow: textShadow,
                     }}
                   >
                     Sign Out
@@ -103,8 +181,8 @@ function TransparentNavigation() {
                   href="/sign-in"
                   className="font-medium hover:opacity-80 transition-colors duration-500 ease-out"
                   style={{
-                    color: isOnLightBackground ? '#374151' : '#ffffff',
-                    textShadow: isOnLightBackground ? 'none' : '0 1px 2px rgba(0, 0, 0, 0.7)',
+                    color: linkColor,
+                    textShadow: textShadow,
                   }}
                 >
                   Sign in
@@ -124,8 +202,8 @@ function TransparentNavigation() {
             <button
               className="p-2 hover:opacity-80 transition-colors duration-500 ease-out"
               style={{
-                color: isOnLightBackground ? '#374151' : '#ffffff',
-                textShadow: isOnLightBackground ? 'none' : '0 1px 2px rgba(0, 0, 0, 0.7)',
+                color: linkColor,
+                textShadow: textShadow,
               }}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
