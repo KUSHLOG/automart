@@ -13,77 +13,93 @@ function TransparentNavigation() {
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY)
-      
-      // Detect background color underneath the navigation
-      if (navRef.current) {
-        const navRect = navRef.current.getBoundingClientRect()
-        const centerX = navRect.left + navRect.width / 2
-        const centerY = navRect.top + navRect.height / 2
-        
-        // Get the element underneath the navigation center
-        const elementBelow = document.elementFromPoint(centerX, centerY + navRect.height)
-        
-        if (elementBelow) {
-          const styles = window.getComputedStyle(elementBelow)
-          const bgColor = styles.backgroundColor
-          const bgImage = styles.backgroundImage
-          
-          // Check if background is dark or light
-          let isDark = true
-          
-          if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
-            // Parse RGB values
-            const rgb = bgColor.match(/\d+/g)
-            if (rgb && rgb.length >= 3) {
-              const [r, g, b] = rgb.map(Number)
-              // Calculate relative luminance
-              const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
-              isDark = luminance < 0.5
-            }
-          } else if (bgImage && bgImage !== 'none') {
-            // If there's a background image, assume it's dark (like hero sections)
-            isDark = true
-          } else {
-            // Check parent elements for background
-            let parent = elementBelow.parentElement
-            let found = false
-            while (parent && !found && parent !== document.body) {
-              const parentStyles = window.getComputedStyle(parent)
-              const parentBg = parentStyles.backgroundColor
-              const parentBgImage = parentStyles.backgroundImage
-              
-              if (parentBg && parentBg !== 'rgba(0, 0, 0, 0)' && parentBg !== 'transparent') {
-                const rgb = parentBg.match(/\d+/g)
-                if (rgb && rgb.length >= 3) {
-                  const [r, g, b] = rgb.map(Number)
-                  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
-                  isDark = luminance < 0.5
-                  found = true
-                }
-              } else if (parentBgImage && parentBgImage !== 'none') {
-                isDark = true
-                found = true
+
+      // Dynamically detect background based on scroll position and actual DOM elements
+      const detectBackground = () => {
+        if (navRef.current) {
+          // Get the navigation bounds
+          const navRect = navRef.current.getBoundingClientRect()
+          const centerX = window.innerWidth / 2
+          const belowNavY = navRect.bottom + 10 // Look just below the nav
+
+          // Get element at the center point below navigation
+          const elementBelow = document.elementFromPoint(centerX, belowNavY)
+
+          if (elementBelow) {
+            // Check the computed styles of the element
+            const computedStyle = window.getComputedStyle(elementBelow)
+            let backgroundColor = computedStyle.backgroundColor
+            let backgroundImage = computedStyle.backgroundImage
+
+            // Walk up the DOM tree to find a meaningful background
+            let current: Element | null = elementBelow
+            let attempts = 0
+            while (current && attempts < 10) {
+              const style = window.getComputedStyle(current)
+              const bgColor = style.backgroundColor
+              const bgImage = style.backgroundImage
+
+              // If we find a non-transparent background color
+              if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
+                backgroundColor = bgColor
+                break
               }
-              parent = parent.parentElement
+
+              // If we find a background image
+              if (bgImage && bgImage !== 'none') {
+                backgroundImage = bgImage
+                break
+              }
+
+              current = current.parentElement
+              attempts++
             }
-            
-            // If no background found, use scroll position as fallback
-            if (!found) {
-              isDark = scrollY < 300 // Assume dark hero section at top
+
+            // Determine if background is dark or light
+            let isDark = true // Default to dark for safety
+
+            if (
+              backgroundColor &&
+              backgroundColor !== 'rgba(0, 0, 0, 0)' &&
+              backgroundColor !== 'transparent'
+            ) {
+              // Parse RGB values from the background color
+              const rgbMatch = backgroundColor.match(/rgba?\(([^)]+)\)/)
+              if (rgbMatch) {
+                const rgbValues = rgbMatch[1].split(',').map(val => parseInt(val.trim()))
+                if (rgbValues.length >= 3) {
+                  const [r, g, b] = rgbValues
+                  // Calculate luminance using the standard formula
+                  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+                  isDark = luminance < 0.6 // Use 0.6 threshold for better contrast
+                }
+              }
+            } else if (backgroundImage && backgroundImage !== 'none') {
+              // If there's a background image, assume dark
+              isDark = true
+            } else {
+              // Fallback: use scroll position to guess
+              // Hero section is typically dark, content areas might be light
+              isDark = scrollY < 500 // Adjust this threshold based on your layout
             }
+
+            return isDark
           }
-          
-          setIsDarkBackground(isDark)
         }
+
+        // Fallback logic based on scroll position
+        return scrollY < 500
       }
+
+      setIsDarkBackground(detectBackground())
     }
 
     // Initial check
     handleScroll()
-    
+
     window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('resize', handleScroll, { passive: true })
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', handleScroll)

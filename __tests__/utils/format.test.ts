@@ -34,11 +34,11 @@ describe('Currency and Format Utils', () => {
     })
 
     it('should handle non-number inputs', () => {
-      // @ts-ignore - Testing invalid inputs intentionally
+      // @ts-expect-error - Testing invalid inputs intentionally
       expect(formatLKR('1000')).toBe('LKR 0')
-      // @ts-ignore - Testing invalid inputs intentionally
+      // @ts-expect-error - Testing invalid inputs intentionally
       expect(formatLKR(null)).toBe('LKR 0')
-      // @ts-ignore - Testing invalid inputs intentionally
+      // @ts-expect-error - Testing invalid inputs intentionally
       expect(formatLKR(undefined)).toBe('LKR 0')
     })
 
