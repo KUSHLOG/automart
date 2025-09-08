@@ -18,14 +18,14 @@ const createVehicleSchema = z.object({
 export async function POST(req: NextRequest) {
   try {
     const session = await auth()
-    
+
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const body = await req.json()
     const result = createVehicleSchema.safeParse(body)
-    
+
     if (!result.success) {
       return NextResponse.json({ error: 'Invalid data', details: result.error }, { status: 400 })
     }
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
 export async function GET() {
   try {
     const session = await auth()
-    
+
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

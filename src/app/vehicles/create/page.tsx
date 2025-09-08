@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 
 export default async function CreateVehiclePage() {
   const session = await auth()
-  
+
   if (!session) {
     redirect('/sign-in')
   }
@@ -163,7 +163,10 @@ export default async function CreateVehiclePage() {
               </div>
 
               <div>
-                <label htmlFor="transmission" className="block text-sm font-medium text-gray-300 mb-2">
+                <label
+                  htmlFor="transmission"
+                  className="block text-sm font-medium text-gray-300 mb-2"
+                >
                   Transmission
                 </label>
                 <select

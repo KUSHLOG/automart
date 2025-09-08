@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { prisma } from '@/server/db/prisma'
 import VehiclesGrid from '@/components/VehiclesGrid'
 import VehicleFilters from '@/components/VehicleFilters'
+import Link from 'next/link'
 
 interface SearchParams {
   make?: string
@@ -55,6 +56,7 @@ async function getVehicles(searchParams: SearchParams) {
   return await prisma.vehicle.findMany({
     where,
     orderBy: { createdAt: 'desc' },
+    take: 20, // Limit to 20 vehicles per page for better performance
   })
 }
 
@@ -82,61 +84,84 @@ export default async function VehiclesPage({ searchParams }: PageProps) {
   const filterOptions = await getFilterOptions()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black pt-28">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent mb-4">
-            Browse Our Vehicles
-          </h1>
-          <p className="text-xl text-gray-300">
-            Find your perfect vehicle from our extensive collection
-          </p>
+    <div className="min-h-screen">
+      {/* Hero Section with Black Background - Same as Homepage */}
+      <section className="relative bg-black text-white min-h-screen flex flex-col">
+        {/* Background Pattern/Texture */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black opacity-90"></div>
+
+        {/* Content */}
+        <div className="relative flex-1 flex flex-col justify-center items-center px-4">
+          <div className="text-center mb-12 max-w-4xl">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              Browse Our Vehicles
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-300 mb-8">
+              Find your perfect vehicle from our extensive collection
+            </p>
+          </div>
+
+          {/* Filter Section - Glassmorphism Style like Homepage */}
+          <div className="w-full max-w-6xl bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 mb-8">
+            <VehicleFilters searchParams={resolvedSearchParams} filterOptions={filterOptions} />
+          </div>
+
+          <div className="mb-6">
+            <p className="text-gray-300 text-center">
+              {vehicles.length === 0
+                ? 'No vehicles found matching your criteria.'
+                : `Showing ${vehicles.length} vehicle${vehicles.length === 1 ? '' : 's'}`}
+            </p>
+          </div>
         </div>
+      </section>
 
-        <VehicleFilters searchParams={resolvedSearchParams} filterOptions={filterOptions} />
-
-        <div className="mb-6">
-          <p className="text-gray-300">
-            {vehicles.length === 0
-              ? 'No vehicles found'
-              : `${vehicles.length} vehicle${vehicles.length !== 1 ? 's' : ''} found`}
-          </p>
-        </div>
-
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
-            </div>
-          }
-        >
-          {vehicles.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="w-24 h-24 mx-auto mb-6 opacity-50">
-                <svg
-                  className="w-full h-full text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
+      {/* Vehicles Grid Section - White Background like Homepage Featured Section */}
+      <section className="bg-white py-16 px-4">
+        <div className="max-w-7xl mx-auto">
+          <Suspense
+            fallback={
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+                <p className="mt-4 text-gray-600">Loading vehicles...</p>
               </div>
-              <h3 className="text-xl font-medium text-white mb-2">No vehicles found</h3>
-              <p className="text-gray-400">
-                Try adjusting your search filters or browse all vehicles.
-              </p>
-            </div>
-          ) : (
-            <VehiclesGrid vehicles={vehicles} />
-          )}
-        </Suspense>
-      </div>
+            }
+          >
+            {vehicles.length === 0 ? (
+              <div className="text-center py-20">
+                <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
+                  <svg
+                    className="w-12 h-12 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M8.25 18.75a1.5 1.5 0 01-3 0V4.5a1.5 1.5 0 013 0V12l1.5-1.5L12 12l1.5-1.5L15 12V4.5a1.5 1.5 0 013 0v14.25a1.5 1.5 0 01-3 0V16.5"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">No Vehicles Found</h3>
+                <p className="text-gray-600 mb-8 max-w-md mx-auto">
+                  We couldn&apos;t find any vehicles matching your search criteria. Try adjusting
+                  your filters or browse all available vehicles.
+                </p>
+                <Link
+                  href="/vehicles"
+                  className="inline-flex items-center bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-200 transform hover:scale-105"
+                >
+                  Reset Filters
+                </Link>
+              </div>
+            ) : (
+              <VehiclesGrid vehicles={vehicles} />
+            )}
+          </Suspense>
+        </div>
+      </section>
     </div>
   )
 }

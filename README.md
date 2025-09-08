@@ -1,4 +1,5 @@
 # Auto Mart - Vehicle- 📈 **View Tracking** for popular vehicle identification
+
 - 💰 **Bidding System** with 7-day auction periods
 - 📱 **Responsive Design** with Tailwind CSSarketplace
 
@@ -22,7 +23,7 @@ A Next.js-based vehicle marketplace with buy now and bidding features.
   - Bidding (7-day auction)
 - 👤 **User Authentication** with NextAuth
 - 📈 **View Tracking** for popular vehicle identification
--  **Responsive Design** with Tailwind CSS
+- **Responsive Design** with Tailwind CSS
 
 ## Getting Started
 

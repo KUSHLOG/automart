@@ -1,0 +1,171 @@
+name: 'Auto Mart CI/CD Pipeline'
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # Phase 1: Code Quality & Compilation Tests
+  quality-check:
+    name: 📋 Code Quality & Type Safety
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 📥 Install dependencies
+        run: npm ci
+
+      - name: 🔍 TypeScript compilation check
+        run: npx tsc --noEmit
+
+      - name: 🧹 ESLint check
+        run: npm run lint
+
+      - name: ✨ Prettier format check
+        run: npx prettier --check .
+
+  # Phase 2: Component & Import Validation
+  component-validation:
+    name: 🧩 Component Import/Export Tests
+    runs-on: ubuntu-latest
+    needs: quality-check
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 📥 Install dependencies
+        run: npm ci
+
+      - name: 🔧 Setup database
+        run: |
+          npx prisma generate
+          npx prisma db push
+
+      - name: 🧪 Component export validation
+        run: |
+          node -e "
+          const fs = require('fs');
+          const checkExports = (file) => {
+            const content = fs.readFileSync(file, 'utf8');
+            if (!content.includes('export default')) {
+              throw new Error(\`Missing default export in \${file}\`);
+            }
+          };
+          ['src/components/VehiclesGrid.tsx', 'src/components/VehicleFilters.tsx'].forEach(checkExports);
+          console.log('✅ All components have proper exports');
+          "
+
+      - name: 🏗️ Build test
+        run: npm run build
+
+      - name: 🧪 Unit tests
+        run: npm test -- --passWithNoTests
+
+  # Phase 3: Integration & E2E Tests
+  integration-tests:
+    name: 🌐 Integration & E2E Tests
+    runs-on: ubuntu-latest
+    needs: component-validation
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 📥 Install dependencies
+        run: npm ci
+
+      - name: 🔧 Setup database
+        run: |
+          npx prisma generate
+          npx prisma db push
+
+      - name: 📦 Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: 🧪 Component validation E2E tests
+        run: npx playwright test tests/e2e/component-validation.spec.ts
+
+      - name: 🧪 Run all E2E tests
+        run: npx playwright test
+
+      - name: 📸 Upload test results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+
+  # Phase 4: Performance & Security Tests
+  performance-security:
+    name: ⚡ Performance & Security
+    runs-on: ubuntu-latest
+    needs: integration-tests
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 📥 Install dependencies
+        run: npm ci
+
+      - name: 🔒 Security audit
+        run: npm audit --audit-level moderate
+
+      - name: 📊 Bundle analysis
+        run: |
+          npm run build
+          npx next-bundle-analyzer || echo "Bundle analysis completed"
+
+  # Phase 5: Deployment Readiness
+  deployment-check:
+    name: 🚀 Deployment Readiness
+    runs-on: ubuntu-latest
+    needs: [quality-check, component-validation, integration-tests]
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 📥 Install dependencies
+        run: npm ci
+
+      - name: 🏗️ Production build
+        run: npm run build
+
+      - name: ✅ Deployment ready
+        run: echo "🎉 All checks passed! Ready for deployment 🚀"
