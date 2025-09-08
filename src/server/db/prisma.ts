@@ -1,13 +1,2 @@
-import { PrismaClient } from '@prisma/client'
-
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient | undefined }
-
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log: process.env.NODE_ENV === 'development' ? ['error'] : [],
-    // Performance optimizations
-    errorFormat: 'minimal',
-  })
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+// Re-export the centralized Prisma client
+export { prisma } from './client'

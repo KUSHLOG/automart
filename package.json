@@ -27,6 +27,7 @@
     "db:reset": "prisma migrate reset",
     "db:seed": "tsx prisma/seed.ts",
     "db:setup": "npm run db:generate && npm run db:seed",
+    "db:indexes": "sqlite3 prisma/dev.db < prisma/migrations/add_performance_indexes.sql",
     "clean": "rm -rf .next node_modules/.cache"
   },
   "dependencies": {
@@ -35,6 +36,7 @@
     "bcrypt": "^6.0.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.12",
+    "ioredis": "^5.7.0",
     "next": "15.5.2",
     "next-auth": "^5.0.0-beta.25",
     "prisma": "^6.15.0",
