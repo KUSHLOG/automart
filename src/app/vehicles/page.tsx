@@ -12,6 +12,7 @@ interface SearchParams {
   minPrice?: string
   maxPrice?: string
   search?: string
+  price?: string // For homepage price range format like "2000000-5000000"
 }
 
 interface PageProps {
@@ -32,7 +33,7 @@ interface VehicleWhereInput {
 }
 
 async function getVehicles(searchParams: SearchParams) {
-  const { make, model, year, type, minPrice, maxPrice, search } = searchParams
+  const { make, model, year, type, minPrice, maxPrice, search, price } = searchParams
 
   const where: VehicleWhereInput = {}
 
@@ -40,11 +41,23 @@ async function getVehicles(searchParams: SearchParams) {
   if (model && model !== 'all') where.model = { contains: model }
   if (year && year !== 'all') where.year = parseInt(year)
   if (type && type !== 'all') where.type = type as 'BUY_NOW' | 'BIDDING'
-  if (minPrice || maxPrice) {
+
+  // Handle price range from homepage or individual min/max from filters
+  if (price) {
+    // Homepage price range format: "2000000-5000000" or "10000000-"
+    where.price = {}
+    if (price.includes('-')) {
+      const [min, max] = price.split('-')
+      if (min) where.price.gte = parseInt(min)
+      if (max) where.price.lte = parseInt(max)
+    }
+  } else if (minPrice || maxPrice) {
+    // Individual min/max from filters
     where.price = {}
     if (minPrice) where.price.gte = parseInt(minPrice)
     if (maxPrice) where.price.lte = parseInt(maxPrice)
   }
+
   if (search) {
     where.OR = [
       { make: { contains: search } },

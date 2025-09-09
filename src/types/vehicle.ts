@@ -6,6 +6,12 @@ export interface Vehicle {
   year: number
   price: number
   mileage: number
+  fuelType: string
+  bodyType: string
+  engineSize: string
+  color: string
+  transmission: string
+  condition: string
   imageUrl: string
   description: string
   type: 'BUY_NOW' | 'BIDDING'
@@ -19,6 +25,8 @@ export interface User {
   id: string
   email: string
   name: string | null
+  phone: string | null
+  address: string | null
   createdAt: Date
   updatedAt: Date
 }

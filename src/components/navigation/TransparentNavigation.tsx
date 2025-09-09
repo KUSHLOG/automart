@@ -126,7 +126,7 @@ function TransparentNavigation() {
         boxShadow: scrollY > 50 ? `0 2px 20px rgba(0, 0, 0, 0.1)` : 'none',
       }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
@@ -163,6 +163,28 @@ function TransparentNavigation() {
             >
               Vehicles
             </Link>
+            <Link
+              href="/bidding"
+              className="font-medium hover:opacity-80 transition-all duration-500 ease-out"
+              style={{
+                color: linkColor,
+                textShadow: textShadow,
+              }}
+            >
+              Bidding
+            </Link>
+            {session && (
+              <Link
+                href="/profile"
+                className="font-medium hover:opacity-80 transition-all duration-500 ease-out"
+                style={{
+                  color: linkColor,
+                  textShadow: textShadow,
+                }}
+              >
+                Profile
+              </Link>
+            )}
           </div>
 
           {/* User Menu */}
@@ -181,10 +203,14 @@ function TransparentNavigation() {
                 <form action="/api/auth/signout" method="POST">
                   <button
                     type="submit"
-                    className="text-sm font-medium hover:opacity-80 transition-colors duration-500 ease-out"
+                    className="text-sm font-medium hover:opacity-80 transition-colors duration-500 ease-out px-4 py-2 border rounded-lg"
                     style={{
                       color: signOutColor,
                       textShadow: textShadow,
+                      borderColor: isDarkBackground
+                        ? 'rgba(248,113,113,0.5)'
+                        : 'rgba(220,38,38,0.5)',
+                      backgroundColor: 'transparent',
                     }}
                   >
                     Sign Out
@@ -195,16 +221,17 @@ function TransparentNavigation() {
               <div className="flex items-center space-x-3">
                 <Link
                   href="/sign-in"
-                  className="font-medium hover:opacity-80 transition-colors duration-500 ease-out"
+                  className="font-medium hover:opacity-80 transition-colors duration-500 ease-out px-4 py-2 border border-white/30 rounded-lg"
                   style={{
                     color: linkColor,
                     textShadow: textShadow,
+                    borderColor: isDarkBackground ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)',
                   }}
                 >
                   Sign in
                 </Link>
                 <Link
-                  href="/sign-in"
+                  href="/sign-up"
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-all duration-300 font-medium"
                 >
                   Sign up

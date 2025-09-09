@@ -1,109 +1,105 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "Lint Check",
-			"type": "shell",
-			"command": "npm run lint",
-			"problemMatcher": [
-				"$eslint-stylish"
-			],
-			"group": "test"
-		},
-		{
-			"label": "Prettier Check",
-			"type": "shell",
-			"command": "npm run prettier:check",
-			"group": "test"
-		},
-		{
-			"label": "Fix Prettier Issues",
-			"type": "shell",
-			"command": "npm run prettier",
-			"group": "test"
-		},
-		{
-			"label": "Prettier Recheck",
-			"type": "shell",
-			"command": "npm run prettier:check",
-			"group": "test"
-		},
-		{
-			"label": "TypeScript Check",
-			"type": "shell",
-			"command": "npm run type-check",
-			"problemMatcher": [
-				"$tsc"
-			],
-			"group": "test"
-		},
-		{
-			"label": "Unit Tests",
-			"type": "shell",
-			"command": "npm test",
-			"problemMatcher": [],
-			"group": "test"
-		},
-		{
-			"label": "Integration Tests",
-			"type": "shell",
-			"command": "npm run test:integration",
-			"group": "test"
-		},
-		{
-			"label": "E2E Tests",
-			"type": "shell",
-			"command": "npm run test:e2e",
-			"isBackground": false,
-			"group": "test"
-		},
-		{
-			"label": "Final Test Summary",
-			"type": "shell",
-			"command": "node test-summary.js",
-			"group": "test"
-		},
-		{
-			"label": "Final Test Summary Report",
-			"type": "shell",
-			"command": "node test-summary.js",
-			"group": "test"
-		},
-		{
-			"label": "Fixed E2E Tests",
-			"type": "shell",
-			"command": "npm run test:e2e",
-			"group": "test"
-		},
-		{
-			"label": "Seed Database",
-			"type": "shell",
-			"command": "npm run seed",
-			"group": "test"
-		},
-		{
-			"label": "Simple E2E Test",
-			"type": "shell",
-			"command": "npx playwright test working-tests.spec.ts --reporter=list",
-			"group": "test"
-		},
-		{
-			"label": "Simple E2E Test",
-			"type": "shell",
-			"command": "npm run test:e2e",
-			"group": "test"
-		},
-		{
-			"label": "Final Working E2E Test",
-			"type": "shell",
-			"command": "npx playwright test final-working.spec.ts --reporter=list",
-			"group": "test"
-		},
-		{
-			"label": "Complete Test Suite",
-			"type": "shell",
-			"command": "echo '=== LINT CHECK ===' && npm run lint && echo '\\n=== PRETTIER CHECK ===' && npm run prettier:check && echo '\\n=== TYPE CHECK ===' && npm run type-check && echo '\\n=== UNIT TESTS ===' && npm test -- --verbose && echo '\\n=== INTEGRATION TESTS ===' && npm run test:integration && echo '\\n=== E2E TESTS ===' && npx playwright test --reporter=list && echo '\\n🎉 ALL TESTS COMPLETED!'",
-			"group": "test"
-		}
-	]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Lint Check",
+      "type": "shell",
+      "command": "npm run lint",
+      "problemMatcher": ["$eslint-stylish"],
+      "group": "test"
+    },
+    {
+      "label": "Prettier Check",
+      "type": "shell",
+      "command": "npm run prettier:check",
+      "group": "test"
+    },
+    {
+      "label": "Fix Prettier Issues",
+      "type": "shell",
+      "command": "npm run prettier",
+      "group": "test"
+    },
+    {
+      "label": "Prettier Recheck",
+      "type": "shell",
+      "command": "npm run prettier:check",
+      "group": "test"
+    },
+    {
+      "label": "TypeScript Check",
+      "type": "shell",
+      "command": "npm run type-check",
+      "problemMatcher": ["$tsc"],
+      "group": "test"
+    },
+    {
+      "label": "Unit Tests",
+      "type": "shell",
+      "command": "npm test",
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Integration Tests",
+      "type": "shell",
+      "command": "npm run test:integration",
+      "group": "test"
+    },
+    {
+      "label": "E2E Tests",
+      "type": "shell",
+      "command": "npm run test:e2e",
+      "isBackground": false,
+      "group": "test"
+    },
+    {
+      "label": "Final Test Summary",
+      "type": "shell",
+      "command": "node test-summary.js",
+      "group": "test"
+    },
+    {
+      "label": "Final Test Summary Report",
+      "type": "shell",
+      "command": "node test-summary.js",
+      "group": "test"
+    },
+    {
+      "label": "Fixed E2E Tests",
+      "type": "shell",
+      "command": "npm run test:e2e",
+      "group": "test"
+    },
+    {
+      "label": "Seed Database",
+      "type": "shell",
+      "command": "npm run seed",
+      "group": "test"
+    },
+    {
+      "label": "Simple E2E Test",
+      "type": "shell",
+      "command": "npx playwright test working-tests.spec.ts --reporter=list",
+      "group": "test"
+    },
+    {
+      "label": "Simple E2E Test",
+      "type": "shell",
+      "command": "npm run test:e2e",
+      "group": "test"
+    },
+    {
+      "label": "Final Working E2E Test",
+      "type": "shell",
+      "command": "npx playwright test final-working.spec.ts --reporter=list",
+      "group": "test"
+    },
+    {
+      "label": "Complete Test Suite",
+      "type": "shell",
+      "command": "echo '=== LINT CHECK ===' && npm run lint && echo '\\n=== PRETTIER CHECK ===' && npm run prettier:check && echo '\\n=== TYPE CHECK ===' && npm run type-check && echo '\\n=== UNIT TESTS ===' && npm test -- --verbose && echo '\\n=== INTEGRATION TESTS ===' && npm run test:integration && echo '\\n=== E2E TESTS ===' && npx playwright test --reporter=list && echo '\\n🎉 ALL TESTS COMPLETED!'",
+      "group": "test"
+    }
+  ]
 }

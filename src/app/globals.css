@@ -27,6 +27,23 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
+  width: 100%;
+}
+
+/* Ensure truly edge-to-edge layout */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Remove any default container margins */
+#__next {
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 html {
@@ -37,6 +54,7 @@ html {
 
 /* Dynamic Ribbon Cloudy Animations */
 @keyframes cloudFloat {
+
   0%,
   100% {
     transform: translateX(0) translateY(0) scale(1);
@@ -55,6 +73,7 @@ html {
 }
 
 @keyframes cloudPulse {
+
   0%,
   100% {
     opacity: 0.2;
@@ -79,14 +98,12 @@ html {
 
 /* Enhanced Ribbon Effects */
 .ribbon-cloudy {
-  background: linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.03) 0%,
-    rgba(255, 255, 255, 0.08) 25%,
-    rgba(255, 255, 255, 0.05) 50%,
-    rgba(255, 255, 255, 0.08) 75%,
-    rgba(255, 255, 255, 0.03) 100%
-  );
+  background: linear-gradient(45deg,
+      rgba(255, 255, 255, 0.03) 0%,
+      rgba(255, 255, 255, 0.08) 25%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0.08) 75%,
+      rgba(255, 255, 255, 0.03) 100%);
   background-size: 200% 100%;
   animation: ribbonShimmer 8s ease-in-out infinite;
 }

@@ -12,6 +12,9 @@ model User {
   email     String   @unique
   name      String?
   password  String
+  phone     String?  // Contact phone number
+  address   String?  // Contact address
+  nic       String?  // National Identity Card number
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   vehicles  Vehicle[]
@@ -20,14 +23,20 @@ model User {
 
 model Vehicle {
   id          String   @id @default(cuid())
-  make        String
-  model       String
-  year        Int
-  price       Int       // cents or LKR whole number. Here treat as integer LKR.
-  mileage     Int       // in km
+  make        String   // Brand (BMW, Toyota, etc.)
+  model       String   // Model name
+  year        Int      // Year of manufacture
+  price       Int      // cents or LKR whole number. Here treat as integer LKR.
+  mileage     Int      // in km
+  fuelType    String   @default("Petrol") // Petrol, Diesel, Electric, Hybrid
+  bodyType    String   @default("Sedan")  // Sedan, SUV, Hatchback, Coupe, etc.
+  engineSize  String   @default("2.0L")   // e.g., "2.0L", "1500cc"
+  color       String   @default("White")  // Vehicle color
+  transmission String  @default("Automatic") // Manual, Automatic, CVT
+  condition   String   @default("Used")   // New, Used, Certified Pre-owned
   imageUrl    String
   description String
-  specs       Json      // include { airConditioner: true/false, ... }
+  specs       Json     // include { airConditioner: true/false, ... }
   type        VehicleType // BUY_NOW, BIDDING, LIVE_AUCTION
   ownerId     String
   owner       User      @relation(fields: [ownerId], references: [id])

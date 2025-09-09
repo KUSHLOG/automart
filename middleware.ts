@@ -1,7 +1,34 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { auth } from '@/server/auth/auth'
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
+  // Get the pathname of the request
+  const { pathname } = request.nextUrl
+
+  // Protected routes that require authentication
+  const protectedRoutes = [
+    '/vehicles', // Vehicle listing page requires sign up
+    '/bidding', // Bidding page requires sign up
+    '/dashboard',
+    '/profile',
+  ]
+
+  // Check if the current path is protected
+  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route))
+
+  if (isProtectedRoute) {
+    // Get session from auth
+    const session = await auth()
+
+    // If no session, redirect to sign-in
+    if (!session) {
+      const signInUrl = new URL('/sign-in', request.url)
+      signInUrl.searchParams.set('callbackUrl', pathname)
+      return NextResponse.redirect(signInUrl)
+    }
+  }
+
   // Create response
   const response = NextResponse.next()
 

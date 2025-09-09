@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Vehicle as PrismaVehicle } from '@prisma/client'
@@ -24,7 +25,7 @@ const VehicleCard = memo(({ vehicle }: { vehicle: Vehicle }) => (
       {/* Car Image */}
       <div className="relative overflow-hidden">
         <Image
-          src={vehicle.imageUrl}
+          src={vehicle.imageUrl || '/placeholder-car.svg'}
           alt={`${vehicle.make} ${vehicle.model}`}
           className="h-48 w-full object-cover group-hover:scale-110 transition-transform duration-300"
           width={400}
@@ -35,9 +36,8 @@ const VehicleCard = memo(({ vehicle }: { vehicle: Vehicle }) => (
         {/* Type Badge */}
         <div className="absolute top-4 left-4">
           <span
-            className={`px-3 py-1 rounded-full text-xs font-semibold ${
-              vehicle.type === 'BIDDING' ? 'bg-orange-500 text-white' : 'bg-green-500 text-white'
-            }`}
+            className={`px-3 py-1 rounded-full text-xs font-semibold ${vehicle.type === 'BIDDING' ? 'bg-orange-500 text-white' : 'bg-green-500 text-white'
+              }`}
           >
             {vehicle.type === 'BIDDING' ? 'Bidding' : 'Buy Now'}
           </span>
@@ -107,7 +107,7 @@ function VehiclesGrid({ vehicles }: { vehicles: PrismaVehicle[] }) {
       year: v.year,
       price: v.price,
       mileage: v.mileage,
-      imageUrl: v.imageUrl,
+      imageUrl: v.imageUrl || '/placeholder-car.svg',
       description: v.description,
       type: v.type as 'BUY_NOW' | 'BIDDING',
       views: v.views,
@@ -115,7 +115,7 @@ function VehiclesGrid({ vehicles }: { vehicles: PrismaVehicle[] }) {
     }))
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 w-full">
       {validVehicles.map(vehicle => (
         <VehicleCard key={vehicle.id} vehicle={vehicle} />
       ))}
