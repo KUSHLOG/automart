@@ -35,15 +35,32 @@ const config = {
   ],
   callbacks: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    jwt({ token, user }: any) {
-      if (user) token.uid = user.id
+    jwt({ token, user, trigger, session }: any) {
+      if (user) {
+        token.uid = user.id
+        token.name = user.name
+        token.email = user.email
+      }
+      // Handle session updates
+      if (trigger === 'update' && session) {
+        token.name = session.name
+        token.email = session.email
+      }
       return token
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     session({ session, token }: any) {
-      if (session.user && token?.uid) session.user.id = token.uid as string
+      if (session.user && token?.uid) {
+        session.user.id = token.uid as string
+        session.user.name = token.name
+        session.user.email = token.email
+      }
       return session
     },
+  },
+  session: {
+    strategy: 'jwt' as const,
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
 }
 

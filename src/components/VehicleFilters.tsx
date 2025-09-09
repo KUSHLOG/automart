@@ -111,17 +111,39 @@ export default function VehicleFilters({ searchParams, filterOptions }: VehicleF
             className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="">Any Min Price</option>
-            <option value="1000000" className="bg-gray-800">1M</option>
-            <option value="2000000" className="bg-gray-800">2M</option>
-            <option value="3000000" className="bg-gray-800">3M</option>
-            <option value="5000000" className="bg-gray-800">5M</option>
-            <option value="10000000" className="bg-gray-800">10M</option>
-            <option value="15000000" className="bg-gray-800">15M</option>
-            <option value="20000000" className="bg-gray-800">20M</option>
-            <option value="30000000" className="bg-gray-800">30M</option>
-            <option value="50000000" className="bg-gray-800">50M</option>
-            <option value="75000000" className="bg-gray-800">75M</option>
-            <option value="100000000" className="bg-gray-800">100M</option>
+            <option value="1000000" className="bg-gray-800">
+              1M
+            </option>
+            <option value="2000000" className="bg-gray-800">
+              2M
+            </option>
+            <option value="3000000" className="bg-gray-800">
+              3M
+            </option>
+            <option value="5000000" className="bg-gray-800">
+              5M
+            </option>
+            <option value="10000000" className="bg-gray-800">
+              10M
+            </option>
+            <option value="15000000" className="bg-gray-800">
+              15M
+            </option>
+            <option value="20000000" className="bg-gray-800">
+              20M
+            </option>
+            <option value="30000000" className="bg-gray-800">
+              30M
+            </option>
+            <option value="50000000" className="bg-gray-800">
+              50M
+            </option>
+            <option value="75000000" className="bg-gray-800">
+              75M
+            </option>
+            <option value="100000000" className="bg-gray-800">
+              100M
+            </option>
           </select>
         </div>
 
@@ -136,17 +158,39 @@ export default function VehicleFilters({ searchParams, filterOptions }: VehicleF
             className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="">Any Max Price</option>
-            <option value="1000000" className="bg-gray-800">1M</option>
-            <option value="2000000" className="bg-gray-800">2M</option>
-            <option value="3000000" className="bg-gray-800">3M</option>
-            <option value="5000000" className="bg-gray-800">5M</option>
-            <option value="10000000" className="bg-gray-800">10M</option>
-            <option value="15000000" className="bg-gray-800">15M</option>
-            <option value="20000000" className="bg-gray-800">20M</option>
-            <option value="30000000" className="bg-gray-800">30M</option>
-            <option value="50000000" className="bg-gray-800">50M</option>
-            <option value="75000000" className="bg-gray-800">75M</option>
-            <option value="100000000" className="bg-gray-800">100M</option>
+            <option value="1000000" className="bg-gray-800">
+              1M
+            </option>
+            <option value="2000000" className="bg-gray-800">
+              2M
+            </option>
+            <option value="3000000" className="bg-gray-800">
+              3M
+            </option>
+            <option value="5000000" className="bg-gray-800">
+              5M
+            </option>
+            <option value="10000000" className="bg-gray-800">
+              10M
+            </option>
+            <option value="15000000" className="bg-gray-800">
+              15M
+            </option>
+            <option value="20000000" className="bg-gray-800">
+              20M
+            </option>
+            <option value="30000000" className="bg-gray-800">
+              30M
+            </option>
+            <option value="50000000" className="bg-gray-800">
+              50M
+            </option>
+            <option value="75000000" className="bg-gray-800">
+              75M
+            </option>
+            <option value="100000000" className="bg-gray-800">
+              100M
+            </option>
           </select>
         </div>
 

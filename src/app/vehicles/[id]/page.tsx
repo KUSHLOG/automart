@@ -3,6 +3,8 @@ import { auth } from '@/server/auth/auth'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import BiddingSection from '@/components/BiddingSection'
+import ContactSection from '@/components/ContactSection'
 
 async function getVehicle(id: string) {
   const vehicle = await prisma.vehicle.findUnique({
@@ -45,9 +47,7 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
   const session = await auth()
   const specs = vehicle.specs as VehicleSpecs
   const highestBid = vehicle.bids[0]
-
-  // Check if user is signed in for contact details
-  const showContactDetails = session && vehicle.type === 'BUY_NOW'
+  const isOwner = session?.user?.id === vehicle.ownerId
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 pt-24">
@@ -233,108 +233,19 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
               {/* Contact Details or Bidding Section */}
               <div className="space-y-4">
                 {vehicle.type === 'BUY_NOW' ? (
-                  <div className="bg-gradient-to-r from-green-900/50 to-green-800/50 p-6 rounded-xl border border-green-700">
-                    <h3 className="text-xl font-semibold text-white mb-4">Buy Now</h3>
-                    {showContactDetails ? (
-                      <div className="space-y-3">
-                        <div>
-                          <h4 className="text-green-400 font-medium">Owner Contact Details:</h4>
-                          <p className="text-white">{vehicle.owner.name || 'Vehicle Owner'}</p>
-                          <p className="text-gray-300">{vehicle.owner.email}</p>
-                          {vehicle.owner.phone && (
-                            <p className="text-gray-300">Phone: {vehicle.owner.phone}</p>
-                          )}
-                          {vehicle.owner.address && (
-                            <p className="text-gray-300">Address: {vehicle.owner.address}</p>
-                          )}
-                        </div>
-                        <button className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105">
-                          Contact Owner
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="text-center">
-                        <p className="text-gray-300 mb-4">
-                          Sign in to view contact details and purchase this vehicle
-                        </p>
-                        <Link
-                          href={`/sign-in?callbackUrl=/vehicles/${vehicle.id}`}
-                          className="inline-block bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105"
-                        >
-                          Sign In to Contact Owner
-                        </Link>
-                      </div>
-                    )}
-                  </div>
+                  <ContactSection
+                    vehicleId={vehicle.id}
+                    isOwner={isOwner}
+                    ownerName={vehicle.owner.name}
+                  />
                 ) : (
-                  <div className="bg-gradient-to-r from-blue-900/50 to-blue-800/50 p-6 rounded-xl border border-blue-700">
-                    <h3 className="text-xl font-semibold text-white mb-4">Live Bidding</h3>
-                    {highestBid ? (
-                      <div className="space-y-2">
-                        <p className="text-gray-300">
-                          Current highest bid:{' '}
-                          <span className="text-blue-400 font-bold text-xl">
-                            LKR {highestBid.amount.toLocaleString()}
-                          </span>
-                        </p>
-                        <p className="text-gray-400 text-sm">
-                          by {highestBid.bidder.name || 'Anonymous'}
-                        </p>
-                      </div>
-                    ) : (
-                      <p className="text-gray-300">No bids yet - be the first to bid!</p>
-                    )}
-
-                    {session ? (
-                      <button className="w-full mt-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105">
-                        Place Your Bid
-                      </button>
-                    ) : (
-                      <Link
-                        href={`/sign-in?callbackUrl=/vehicles/${vehicle.id}`}
-                        className="block w-full mt-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 text-center"
-                      >
-                        Sign In to Bid
-                      </Link>
-                    )}
-
-                    {vehicle.biddingEnd && (
-                      <p className="text-gray-400 text-sm mt-2 text-center">
-                        Bidding ends: {new Date(vehicle.biddingEnd).toLocaleDateString()}
-                      </p>
-                    )}
-                  </div>
+                  <BiddingSection
+                    vehicleId={vehicle.id}
+                    highestBid={highestBid}
+                    biddingEnd={vehicle.biddingEnd}
+                    isOwner={isOwner}
+                  />
                 )}
-              </div>
-            </div>
-          </div>
-
-          {/* Additional Information */}
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gray-800/50 p-6 rounded-xl backdrop-blur-sm border border-gray-700">
-              <h4 className="text-white font-semibold mb-3">Safety & Security</h4>
-              <div className="space-y-2 text-gray-300 text-sm">
-                <p>• Vehicle history verified</p>
-                <p>• Secure payment processing</p>
-                <p>• Warranty information available</p>
-              </div>
-            </div>
-
-            <div className="bg-gray-800/50 p-6 rounded-xl backdrop-blur-sm border border-gray-700">
-              <h4 className="text-white font-semibold mb-3">Inspection</h4>
-              <div className="space-y-2 text-gray-300 text-sm">
-                <p>• Pre-purchase inspection available</p>
-                <p>• Test drive can be arranged</p>
-                <p>• Professional vehicle assessment</p>
-              </div>
-            </div>
-
-            <div className="bg-gray-800/50 p-6 rounded-xl backdrop-blur-sm border border-gray-700">
-              <h4 className="text-white font-semibold mb-3">Documentation</h4>
-              <div className="space-y-2 text-gray-300 text-sm">
-                <p>• Vehicle registration papers</p>
-                <p>• Insurance transfer assistance</p>
-                <p>• Service history records</p>
               </div>
             </div>
           </div>

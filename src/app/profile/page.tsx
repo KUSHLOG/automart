@@ -13,7 +13,7 @@ interface UserProfile {
 }
 
 export default function ProfilePage() {
-    const { data: session, status } = useSession()
+    const { data: session, status, update } = useSession()
     const router = useRouter()
     const [profile, setProfile] = useState<UserProfile | null>(null)
     const [loading, setLoading] = useState(true)
@@ -85,6 +85,13 @@ export default function ProfilePage() {
                 const updatedProfile = await response.json()
                 setProfile(updatedProfile)
                 setMessage('Profile updated successfully!')
+
+                // Update the session with new user data
+                await update({
+                    name: updatedProfile.name,
+                    email: updatedProfile.email,
+                })
+
                 setTimeout(() => setMessage(''), 3000)
             } else {
                 const errorData = await response.json()

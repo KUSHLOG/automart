@@ -136,7 +136,6 @@ export default async function HomePage() {
               </form>
             </div>
           </div>
-
         </div>
       </section>
 

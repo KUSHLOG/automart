@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
+import MessagesBadge from '@/components/MessagesBadge'
 
 function TransparentNavigation() {
   const [scrollY, setScrollY] = useState(0)
@@ -173,6 +174,19 @@ function TransparentNavigation() {
             >
               Bidding
             </Link>
+            {session && (
+              <Link
+                href="/messages"
+                className="font-medium hover:opacity-80 transition-all duration-500 ease-out relative"
+                style={{
+                  color: linkColor,
+                  textShadow: textShadow,
+                }}
+              >
+                Messages
+                <MessagesBadge />
+              </Link>
+            )}
             {session && (
               <Link
                 href="/profile"
