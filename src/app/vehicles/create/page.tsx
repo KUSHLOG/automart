@@ -12,14 +12,14 @@ export default async function CreateVehiclePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section with Black Background - Same as other pages */}
-      <section className="relative bg-black text-white min-h-screen flex flex-col w-full">
+      <section className="relative bg-black text-white min-h-screen flex flex-col w-full pt-8">
         {/* Background Pattern/Texture */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black opacity-90 w-full"></div>
 
         {/* Content - Centered and properly spaced */}
         <div className="relative flex-1 flex flex-col justify-center items-center w-full">
           {/* Hero Text - Consistent with other pages */}
-          <div className="text-center mb-8 lg:mb-12 w-full px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8 lg:mb-12 w-full px-4 sm:px-6 lg:px-8 mt-12">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 lg:mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
               Create Vehicle Listing
             </h1>

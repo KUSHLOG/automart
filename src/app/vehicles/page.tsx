@@ -99,14 +99,14 @@ export default async function VehiclesPage({ searchParams }: PageProps) {
   return (
     <div className="min-h-screen">
       {/* Hero Section with Black Background - Same as Homepage */}
-      <section className="relative bg-black text-white min-h-screen flex flex-col">
+      <section className="relative bg-black text-white min-h-screen flex flex-col pt-8">
         {/* Background Pattern/Texture */}
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black opacity-90"></div>
 
         {/* Content */}
         <div className="relative flex-1 flex flex-col justify-center items-center w-full">
           {/* Hero Text - Edge to edge with inner padding only */}
-          <div className="text-center mb-8 lg:mb-12 w-full px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8 lg:mb-12 w-full px-4 sm:px-6 lg:px-8 mt-12">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 lg:mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
               Browse All Vehicles
             </h1>
@@ -122,7 +122,8 @@ export default async function VehiclesPage({ searchParams }: PageProps) {
             </div>
           </div>
 
-          <div className="w-full px-4 sm:px-6 lg:px-8">
+          {/* Status Display - Full width with inner padding and proper bottom spacing */}
+          <div className="mb-6 w-full px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
               <p className="text-gray-300 text-center">
                 {vehicles.length === 0

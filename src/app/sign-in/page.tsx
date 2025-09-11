@@ -1,7 +1,7 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
 export default function SignInPage() {
@@ -9,11 +9,13 @@ export default function SignInPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl') || '/'
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const res = await signIn('credentials', { redirect: false, email, password })
-    if (res?.ok) router.push('/')
+    if (res?.ok) router.push(callbackUrl)
     else setError('Invalid credentials')
   }
 
@@ -25,7 +27,7 @@ export default function SignInPage() {
       password: 'password123',
     })
     if (res?.ok) {
-      router.push('/')
+      router.push(callbackUrl)
     } else {
       setError('Bypass failed - demo user not found')
     }
