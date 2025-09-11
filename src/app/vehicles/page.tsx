@@ -104,75 +104,82 @@ export default async function VehiclesPage({ searchParams }: PageProps) {
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black opacity-90"></div>
 
         {/* Content */}
-        <div className="relative flex-1 flex flex-col justify-center items-center px-4">
-          <div className="text-center mb-12 max-w-4xl">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              Browse Our Vehicles
+        <div className="relative flex-1 flex flex-col justify-center items-center w-full">
+          {/* Hero Text - Edge to edge with inner padding only */}
+          <div className="text-center mb-8 lg:mb-12 w-full px-4 sm:px-6 lg:px-8">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 lg:mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent leading-tight">
+              Browse All Vehicles
             </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-8">
+            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-300 mb-6 lg:mb-8 max-w-4xl mx-auto">
               Find your perfect vehicle from our extensive collection
             </p>
           </div>
 
-          {/* Filter Section - Glassmorphism Style like Homepage */}
-          <div className="w-full max-w-6xl bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 mb-8">
-            <VehicleFilters searchParams={resolvedSearchParams} filterOptions={filterOptions} />
+          {/* Filter Section - Full width edge to edge */}
+          <div className="w-full px-4 sm:px-6 lg:px-8">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 lg:p-6 border border-white/20 max-w-7xl mx-auto mb-6 lg:mb-8">
+              <VehicleFilters searchParams={resolvedSearchParams} filterOptions={filterOptions} />
+            </div>
           </div>
 
-          <div className="mb-6">
-            <p className="text-gray-300 text-center">
-              {vehicles.length === 0
-                ? 'No vehicles found matching your criteria.'
-                : `Showing ${vehicles.length} vehicle${vehicles.length === 1 ? '' : 's'}`}
-            </p>
+          <div className="w-full px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+              <p className="text-gray-300 text-center">
+                {vehicles.length === 0
+                  ? 'No vehicles found matching your criteria.'
+                  : `Showing ${vehicles.length} vehicle${vehicles.length === 1 ? '' : 's'}`}
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Vehicles Grid Section - White Background like Homepage Featured Section */}
-      <section className="bg-white py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          <Suspense
-            fallback={
-              <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
-                <p className="mt-4 text-gray-600">Loading vehicles...</p>
-              </div>
-            }
-          >
-            {vehicles.length === 0 ? (
-              <div className="text-center py-20">
-                <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
-                  <svg
-                    className="w-12 h-12 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M8.25 18.75a1.5 1.5 0 01-3 0V4.5a1.5 1.5 0 013 0V12l1.5-1.5L12 12l1.5-1.5L15 12V4.5a1.5 1.5 0 013 0v14.25a1.5 1.5 0 01-3 0V16.5"
-                    />
-                  </svg>
+      <section className="bg-white py-12 lg:py-16 w-full">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <Suspense
+              fallback={
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+                  <p className="mt-4 text-gray-600">Loading vehicles...</p>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">No Vehicles Found</h3>
-                <p className="text-gray-600 mb-8 max-w-md mx-auto">
-                  We couldn&apos;t find any vehicles matching your search criteria. Try adjusting
-                  your filters or browse all available vehicles.
-                </p>
-                <Link
-                  href="/vehicles"
-                  className="inline-flex items-center bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-200 transform hover:scale-105"
-                >
-                  Reset Filters
-                </Link>
-              </div>
-            ) : (
-              <VehiclesGrid vehicles={vehicles} />
-            )}
-          </Suspense>
+              }
+            >
+              {vehicles.length === 0 ? (
+                <div className="text-center py-20">
+                  <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
+                    <svg
+                      className="w-12 h-12 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M8.25 18.75a1.5 1.5 0 01-3 0V4.5a1.5 1.5 0 013 0V12l1.5-1.5L12 12l1.5-1.5L15 12V4.5a1.5 1.5 0 013 0v14.25a1.5 1.5 0 01-3 0V16.5"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">No Vehicles Found</h3>
+                  <p className="text-gray-600 mb-8 max-w-md mx-auto">
+                    We couldn&apos;t find any vehicles matching your search criteria. Try adjusting
+                    your filters or browse all available vehicles.
+                  </p>
+                  <Link
+                    href="/vehicles"
+                    className="inline-flex items-center bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-200 transform hover:scale-105"
+                  >
+                    Reset Filters
+                  </Link>
+                </div>
+              ) : (
+                <VehiclesGrid vehicles={vehicles} />
+              )}
+            </Suspense>
+          </div>
         </div>
       </section>
     </div>

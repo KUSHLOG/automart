@@ -176,6 +176,18 @@ function TransparentNavigation() {
             </Link>
             {session && (
               <Link
+                href="/vehicles/create"
+                className="font-medium hover:opacity-80 transition-all duration-500 ease-out"
+                style={{
+                  color: linkColor,
+                  textShadow: textShadow,
+                }}
+              >
+                Create Listing
+              </Link>
+            )}
+            {session && (
+              <Link
                 href="/messages"
                 className="font-medium hover:opacity-80 transition-all duration-500 ease-out relative"
                 style={{

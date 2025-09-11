@@ -95,7 +95,7 @@ export default function MessagesPage() {
 
     if (status === 'loading' || loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 pt-24 flex items-center justify-center">
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
             </div>
         )
@@ -123,8 +123,8 @@ export default function MessagesPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 pt-24">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center py-8">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                 <div className="space-y-8">
                     {/* Header */}
                     <div className="text-center">
@@ -142,8 +142,18 @@ export default function MessagesPage() {
                     {conversations.length === 0 ? (
                         <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-12 text-center">
                             <div className="mb-6">
-                                <svg className="w-16 h-16 text-gray-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                <svg
+                                    className="w-16 h-16 text-gray-400 mx-auto"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={1.5}
+                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                                    />
                                 </svg>
                             </div>
                             <h3 className="text-2xl font-semibold text-white mb-4">No conversations yet</h3>
@@ -160,7 +170,7 @@ export default function MessagesPage() {
                     ) : (
                         <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 overflow-hidden">
                             <div className="divide-y divide-white/10">
-                                {conversations.map((conversation) => (
+                                {conversations.map(conversation => (
                                     <Link
                                         key={conversation.id}
                                         href={`/messages/${conversation.id}`}
@@ -182,7 +192,8 @@ export default function MessagesPage() {
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center justify-between mb-2">
                                                     <h3 className="text-lg font-semibold text-white truncate">
-                                                        {conversation.vehicle.year} {conversation.vehicle.make} {conversation.vehicle.model}
+                                                        {conversation.vehicle.year} {conversation.vehicle.make}{' '}
+                                                        {conversation.vehicle.model}
                                                     </h3>
                                                     <div className="flex items-center space-x-3">
                                                         {conversation.unreadCount > 0 && (
@@ -193,8 +204,7 @@ export default function MessagesPage() {
                                                         <span className="text-gray-400 text-sm">
                                                             {conversation.lastMessage
                                                                 ? formatTimeAgo(conversation.lastMessage.createdAt)
-                                                                : formatTimeAgo(conversation.createdAt)
-                                                            }
+                                                                : formatTimeAgo(conversation.createdAt)}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -205,7 +215,8 @@ export default function MessagesPage() {
                                                             Conversation with {conversation.otherUser.name || 'Anonymous'}
                                                         </span>
                                                         <div className="text-blue-400 text-sm font-medium">
-                                                            LKR {conversation.vehicle.price.toLocaleString()} • {conversation.vehicle.type.replace('_', ' ')}
+                                                            LKR {conversation.vehicle.price.toLocaleString()} •{' '}
+                                                            {conversation.vehicle.type.replace('_', ' ')}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -220,8 +231,18 @@ export default function MessagesPage() {
 
                                             {/* Arrow */}
                                             <div className="flex-shrink-0">
-                                                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                <svg
+                                                    className="w-5 h-5 text-gray-400"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M9 5l7 7-7 7"
+                                                    />
                                                 </svg>
                                             </div>
                                         </div>

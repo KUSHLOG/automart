@@ -107,7 +107,7 @@ export default function ProfilePage() {
 
     if (status === 'loading' || loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 pt-24 flex items-center justify-center">
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
             </div>
         )
@@ -118,8 +118,8 @@ export default function ProfilePage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 pt-24">
-            <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center py-8">
+            <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                 <div className="space-y-8">
                     {/* Header */}
                     <div className="text-center">
@@ -164,7 +164,7 @@ export default function ProfilePage() {
                                     type="text"
                                     id="name"
                                     value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    onChange={e => setName(e.target.value)}
                                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                     placeholder="Enter your full name"
                                 />
@@ -178,7 +178,7 @@ export default function ProfilePage() {
                                     type="tel"
                                     id="phone"
                                     value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
+                                    onChange={e => setPhone(e.target.value)}
                                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                     placeholder="Enter your mobile number (e.g., +94 77 123 4567)"
                                 />
@@ -191,7 +191,7 @@ export default function ProfilePage() {
                                 <textarea
                                     id="address"
                                     value={address}
-                                    onChange={(e) => setAddress(e.target.value)}
+                                    onChange={e => setAddress(e.target.value)}
                                     rows={3}
                                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
                                     placeholder="Enter your home address"

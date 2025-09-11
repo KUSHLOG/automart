@@ -1,5 +1,7 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import Link from 'next/link'
 
 interface SearchParams {
@@ -21,13 +23,52 @@ interface VehicleFiltersProps {
 }
 
 export default function VehicleFilters({ searchParams, filterOptions }: VehicleFiltersProps) {
+  const router = useRouter()
+  const [formData, setFormData] = useState({
+    search: searchParams.search || '',
+    make: searchParams.make || 'all',
+    model: searchParams.model || 'all',
+    year: searchParams.year || 'all',
+    type: searchParams.type || 'all',
+    minPrice: searchParams.minPrice || '',
+    maxPrice: searchParams.maxPrice || '',
+  })
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    // Build search params
+    const params = new URLSearchParams()
+    if (formData.search && formData.search !== '') params.set('search', formData.search)
+    if (formData.make && formData.make !== 'all') params.set('make', formData.make)
+    if (formData.model && formData.model !== 'all') params.set('model', formData.model)
+    if (formData.year && formData.year !== 'all') params.set('year', formData.year)
+    if (formData.type && formData.type !== 'all') params.set('type', formData.type)
+    if (formData.minPrice && formData.minPrice !== '') params.set('minPrice', formData.minPrice)
+    if (formData.maxPrice && formData.maxPrice !== '') params.set('maxPrice', formData.maxPrice)
+
+    // Navigate to current page with new search params
+    const queryString = params.toString()
+    router.push(`/vehicles${queryString ? `?${queryString}` : ''}`)
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
   return (
     <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 mb-8">
       <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
         Search Vehicles
       </h2>
 
-      <form method="GET" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4"
+      >
         <div>
           <label htmlFor="search" className="block text-sm font-medium text-gray-300 mb-2">
             Search
@@ -36,7 +77,8 @@ export default function VehicleFilters({ searchParams, filterOptions }: VehicleF
             type="text"
             id="search"
             name="search"
-            defaultValue={searchParams.search || ''}
+            value={formData.search}
+            onChange={handleInputChange}
             placeholder="Search vehicles..."
             className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
@@ -49,7 +91,8 @@ export default function VehicleFilters({ searchParams, filterOptions }: VehicleF
           <select
             id="make"
             name="make"
-            defaultValue={searchParams.make || 'all'}
+            value={formData.make}
+            onChange={handleInputChange}
             className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">All Makes</option>
@@ -62,13 +105,47 @@ export default function VehicleFilters({ searchParams, filterOptions }: VehicleF
         </div>
 
         <div>
+          <label htmlFor="model" className="block text-sm font-medium text-gray-300 mb-2">
+            Model
+          </label>
+          <select
+            id="model"
+            name="model"
+            value={formData.model}
+            onChange={handleInputChange}
+            className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="all">All Models</option>
+            <option value="A4" className="bg-gray-800">
+              A4
+            </option>
+            <option value="C-Class" className="bg-gray-800">
+              C-Class
+            </option>
+            <option value="Camry" className="bg-gray-800">
+              Camry
+            </option>
+            <option value="Civic" className="bg-gray-800">
+              Civic
+            </option>
+            <option value="RX 350" className="bg-gray-800">
+              RX 350
+            </option>
+            <option value="X5" className="bg-gray-800">
+              X5
+            </option>
+          </select>
+        </div>
+
+        <div>
           <label htmlFor="year" className="block text-sm font-medium text-gray-300 mb-2">
             Year
           </label>
           <select
             id="year"
             name="year"
-            defaultValue={searchParams.year || 'all'}
+            value={formData.year}
+            onChange={handleInputChange}
             className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">All Years</option>
@@ -87,7 +164,8 @@ export default function VehicleFilters({ searchParams, filterOptions }: VehicleF
           <select
             id="type"
             name="type"
-            defaultValue={searchParams.type || 'all'}
+            value={formData.type}
+            onChange={handleInputChange}
             className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">All Types</option>
@@ -107,7 +185,8 @@ export default function VehicleFilters({ searchParams, filterOptions }: VehicleF
           <select
             id="minPrice"
             name="minPrice"
-            defaultValue={searchParams.minPrice || ''}
+            value={formData.minPrice}
+            onChange={handleInputChange}
             className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="">Any Min Price</option>
@@ -154,7 +233,8 @@ export default function VehicleFilters({ searchParams, filterOptions }: VehicleF
           <select
             id="maxPrice"
             name="maxPrice"
-            defaultValue={searchParams.maxPrice || ''}
+            value={formData.maxPrice}
+            onChange={handleInputChange}
             className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="">Any Max Price</option>
@@ -194,7 +274,7 @@ export default function VehicleFilters({ searchParams, filterOptions }: VehicleF
           </select>
         </div>
 
-        <div className="col-span-2 md:col-span-3 lg:col-span-6 flex gap-4 pt-4">
+        <div className="col-span-2 md:col-span-3 lg:col-span-7 flex gap-4 pt-4">
           <button
             type="submit"
             className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black"

@@ -35,8 +35,7 @@ async function main() {
       condition: 'Used',
       type: 'BUY_NOW' as const,
       description: 'Well-maintained Toyota Camry with excellent fuel economy',
-      imageUrl:
-        'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      imageUrl: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
       specs: JSON.stringify({ airConditioning: true, powerSteering: true, abs: true }),
       ownerId: demoUser.id,
     },
@@ -54,8 +53,7 @@ async function main() {
       condition: 'Used',
       type: 'BIDDING' as const,
       description: 'Reliable Honda Civic, perfect for daily commuting - Open for bidding',
-      imageUrl:
-        'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      imageUrl: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
       specs: JSON.stringify({ airConditioning: true, sunroof: true, cruiseControl: true }),
       ownerId: demoUser.id,
       biddingStart: new Date(),
@@ -75,8 +73,7 @@ async function main() {
       condition: 'Certified Pre-owned',
       type: 'BUY_NOW' as const,
       description: 'Luxury SUV with premium features and low mileage',
-      imageUrl:
-        'https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      imageUrl: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
       specs: JSON.stringify({
         airConditioning: true,
         leatherSeats: true,
@@ -98,10 +95,8 @@ async function main() {
       transmission: 'Automatic',
       condition: 'Used',
       type: 'BUY_NOW' as const,
-      description:
-        'Elegant Mercedes-Benz C-Class with premium interior and advanced safety features',
-      imageUrl:
-        'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      description: 'Elegant Mercedes-Benz C-Class with premium interior and advanced safety features',
+      imageUrl: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
       specs: JSON.stringify({
         airConditioning: true,
         leatherSeats: true,
@@ -125,8 +120,7 @@ async function main() {
       condition: 'Used',
       type: 'BIDDING' as const,
       description: 'Sporty Audi A4 with quattro all-wheel drive - Perfect for enthusiasts',
-      imageUrl:
-        'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      imageUrl: 'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
       specs: JSON.stringify({
         airConditioning: true,
         leatherSeats: true,
@@ -152,8 +146,7 @@ async function main() {
       condition: 'Certified Pre-owned',
       type: 'BUY_NOW' as const,
       description: 'Luxury Lexus RX 350 SUV with exceptional comfort and reliability',
-      imageUrl:
-        'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      imageUrl: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
       specs: JSON.stringify({
         airConditioning: true,
         leatherSeats: true,

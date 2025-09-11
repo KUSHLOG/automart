@@ -13,10 +13,13 @@ console.log('Conversation model exists:', hasConversation)
 console.log('Message model exists:', hasMessage)
 
 if (hasConversation && hasMessage) {
-    console.log('✅ All messaging models are available!')
+  console.log('✅ All messaging models are available!')
 } else {
-    console.log('❌ Some models are missing')
-    console.log('Available models:', Object.keys(prisma).filter(key => !key.startsWith('_') && !key.startsWith('$')))
+  console.log('❌ Some models are missing')
+  console.log(
+    'Available models:',
+    Object.keys(prisma).filter(key => !key.startsWith('_') && !key.startsWith('$'))
+  )
 }
 
 prisma.$disconnect()

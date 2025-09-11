@@ -36,9 +36,8 @@ const VehicleCard = memo(({ vehicle }: { vehicle: Vehicle }) => (
         {/* Type Badge */}
         <div className="absolute top-4 left-4">
           <span
-            className={`px-3 py-1 rounded-full text-xs font-semibold ${
-              vehicle.type === 'BIDDING' ? 'bg-orange-500 text-white' : 'bg-green-500 text-white'
-            }`}
+            className={`px-3 py-1 rounded-full text-xs font-semibold ${vehicle.type === 'BIDDING' ? 'bg-orange-500 text-white' : 'bg-green-500 text-white'
+              }`}
           >
             {vehicle.type === 'BIDDING' ? 'Bidding' : 'Buy Now'}
           </span>
